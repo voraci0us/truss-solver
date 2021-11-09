@@ -110,6 +110,16 @@ class Truss
     System.out.println("");
   }
 
+  public void handleForce(double f, char a, char b)
+  {
+    double formattedForce = f * -1;
+    if (Math.abs(formattedForce) < 0.001)
+        formattedForce = 0;
+    System.out.println(String.format("force %c%c : %.3f", a, b, formattedForce));
+    this.solved[index(a)][index(b)] = true;
+    this.solved[index(b)][index(a)] = true;
+  }
+
   public void solve()
   {
     System.out.println("Forces in members:");
@@ -186,10 +196,8 @@ class Truss
           if(this.solved[index(thisNode.label)][adjNode])
             continue;
 
-          double formattedForce = f[i] * -1;
-          if (Math.abs(formattedForce) < 0.001)
-            formattedForce = 0;
-          System.out.println(String.format("force %c%c : %.3f", thisNode.label, character(adjNode), formattedForce));
+          handleForce(f[i], thisNode.label, character(adjNode));
+
           ext[adjNode][0] += m[i][0] * f[i];
           ext[adjNode][1] += m[i][1] * f[i];
 
@@ -202,9 +210,6 @@ class Truss
               tmp.addAdj(c);
           }
           q.add(tmp);
-
-          this.solved[index(thisNode.label)][adjNode] = true;
-          this.solved[adjNode][index(thisNode.label)] = true;
         }
 
         unsolvedEdges -= 2;
@@ -225,14 +230,7 @@ class Truss
         //System.out.println(String.format("cosX: %.2f, cosY: %.2f", cos, sin));
         double constant = ext[index(thisNode.label)][0];
 
-        double force = constant / cos;
-
-        double formattedForce = force * -1;
-        if (Math.abs(formattedForce) < 0.001)
-            formattedForce = 0;
-        System.out.println(String.format("force %c%c : %.3f", thisNode.label, thisAdj, formattedForce));
-        this.solved[index(thisNode.label)][index(thisAdj)] = true;
-        this.solved[index(thisAdj)][index(thisNode.label)] = true;
+        handleForce(constant / cos, thisNode.label, thisAdj);
 
         /**System.out.println("\nmaxtix:");
         for (int j = 0; j < 2; j++)
