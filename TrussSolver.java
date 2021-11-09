@@ -5,6 +5,8 @@ class Truss
 {
   // adjacency list
   ArrayList<LinkedList<Character>> next;
+  // adjanency matrix for storing the width of each member
+  double[][] width;
   // x, y coords of each node
   int[][] loc;
   // x, y components of external forces
@@ -32,9 +34,15 @@ class Truss
         ext[i][1] = 0;
       }
       solved = new boolean[n][n];
+      width = new double[n][n];
       for (int i = 0; i < n; i++)
+      {
         for (int j = 0; j < n; j++)
+        {
           solved[i][j] = false;
+          width[i][j] = -1;
+        }
+      }
   }
 
   public static int index(char c)
@@ -65,6 +73,8 @@ class Truss
   {
     this.next.get(index(a)).add(b);
     this.next.get(index(b)).add(a);
+    this.width[index(a)][index(b)] = width;
+    this.width[index(b)][index(a)] = width;
     this.e++;
   }
 
