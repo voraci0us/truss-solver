@@ -40,13 +40,22 @@ class Truss extends Frame
   int[][] loc; // x, y coords of each node
   double[][] ext; // x, y components of external forces
 
+  double maxMemberLength; // defines the longest beam allowed
+
   HashMap<String, Double> forces;
 
+  // if no member length is specified, set an arbitrarily large one
   public Truss(int n)
+  {
+    this(n, 9999999.0);
+  }
+
+  public Truss(int n, double maxMemberLength)
   {
       super("TrussSolver");
       this.n = n;
       this.e = 0;
+      this.maxMemberLength = maxMemberLength;
 
       adj = new boolean[n][n];
       solved = new boolean[n][n];
@@ -246,6 +255,10 @@ class Truss extends Frame
           double Y = this.loc[j][1] - this.loc[i][1];
           double L = Math.sqrt(X * X + Y * Y);
           this.length[i][j] = L;
+          if (L > this.maxMemberLength)
+          {
+            System.out.println(String.format("***MEMBER %c%c IS %.3f LONG, MUST NOT EXCEED %.3f***", character(i), character(j), L, this.maxMemberLength));
+          }
         }
       }
     }
@@ -604,7 +617,7 @@ public class TrussSolver
 
 
 
-    Truss myTruss = new Truss(7);
+    Truss myTruss = new Truss(7, 11.0);
 
     myTruss.addNode('A', 0, 0);
     myTruss.addNode('B', 10, 0);
