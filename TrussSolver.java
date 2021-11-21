@@ -33,7 +33,7 @@ class Truss extends Frame
   // n x n adjacency matrices
   boolean[][] adj; // if true, there is an edge between i and j
   boolean[][] solved; // if true, we have solved for forces here
-  double[][] width; // provided by user
+
   double[][] length; // calculated by node locations
 
   // n x 2 adjacency matrices
@@ -59,7 +59,6 @@ class Truss extends Frame
 
       adj = new boolean[n][n];
       solved = new boolean[n][n];
-      width = new double[n][n];
       length = new double[n][n];
       for (int i = 0; i < n; i++)
       {
@@ -67,7 +66,6 @@ class Truss extends Frame
         {
           adj[i][j] = false;
           solved[i][j] = false;
-          width[i][j] = -1;
           length[i][j] = 0;
         }
       }
@@ -198,14 +196,12 @@ class Truss extends Frame
     System.out.println();
   }
 
-  public void addEdge(char a, char b, double width)
+  public void addEdge(char a, char b)
   {
     int A = index(a);
     int B = index(b);
     this.adj[A][B] = true;
     this.adj[B][A] = true;
-    this.width[A][B] = width;
-    this.width[B][A] = width;
     this.e++;
   }
 
@@ -627,17 +623,17 @@ public class TrussSolver
     myTruss.addNode('F', 15, 0);
     myTruss.addNode('G', 20, -20);
 
-    myTruss.addEdge('A', 'B', 6.5);
-    myTruss.addEdge('A', 'E', 10);
-    myTruss.addEdge('D', 'C', 6.5);
-    myTruss.addEdge('D', 'G', 10);
-    myTruss.addEdge('B', 'E', 10);
-    myTruss.addEdge('B', 'F', 10);
-    myTruss.addEdge('F', 'C', 10);
-    myTruss.addEdge('F', 'E', 10);
-    myTruss.addEdge('F', 'G', 10);
-    myTruss.addEdge('G', 'C', 10);
-    myTruss.addEdge('G', 'E', 10);
+    myTruss.addEdge('A', 'B');
+    myTruss.addEdge('A', 'E');
+    myTruss.addEdge('D', 'C');
+    myTruss.addEdge('D', 'G');
+    myTruss.addEdge('B', 'E');
+    myTruss.addEdge('B', 'F');
+    myTruss.addEdge('F', 'C');
+    myTruss.addEdge('F', 'E');
+    myTruss.addEdge('F', 'G');
+    myTruss.addEdge('G', 'C');
+    myTruss.addEdge('G', 'E');
 
     myTruss.addExt('F', 0, -20);
     myTruss.addExt('A', 0, 10);
