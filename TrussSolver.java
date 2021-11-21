@@ -37,7 +37,7 @@ class Truss extends Frame
   double[][] length; // calculated by node locations
 
   // n x 2 adjacency matrices
-  int[][] loc; // x, y coords of each node
+  double[][] loc; // x, y coords of each node
   double[][] ext; // x, y components of external forces
 
   double maxMemberLength; // defines the longest beam allowed
@@ -70,12 +70,12 @@ class Truss extends Frame
         }
       }
 
-      loc = new int[n][2];
+      loc = new double[n][2];
       ext = new double[n][2];
       for (int i = 0; i < n; i++)
       {
-        ext[i][0] = 0;
-        ext[i][1] = 0;
+        ext[i][0] = 0.0;
+        ext[i][1] = 0.0;
       }
 
       forces = new HashMap<String, Double>();
@@ -158,7 +158,7 @@ class Truss extends Frame
     return (char) (index + (int) 'A');
   }
 
-  public void addNode(char c, int x, int y)
+  public void addNode(char c, double x, double y)
   {
     int index = index(c);
     if (index >= 0 && index < this.n)
@@ -217,7 +217,7 @@ class Truss extends Frame
     System.out.println("Given a truss defined by the following:");
     for (int i = 0; i < n; i++)
     {
-      System.out.print(String.format("%c (%d, %d): ", character(i), loc[i][0], loc[i][1]));
+      System.out.print(String.format("%c (%.3f, %.3f): ", character(i), loc[i][0], loc[i][1]));
       for (int j = 0; j < n; j++)
       {
         if (this.adj[i][j])
@@ -613,31 +613,42 @@ public class TrussSolver
 
 
 
-    Truss myTruss = new Truss(7, 11.0);
+    Truss myTruss = new Truss(10, 11.0);
 
     myTruss.addNode('A', 0, 0);
-    myTruss.addNode('B', 10, 0);
-    myTruss.addNode('C', 20, 0);
-    myTruss.addNode('D', 30, 0);
-    myTruss.addNode('E', 10, -20);
+    myTruss.addNode('B', 5, 0);
+    myTruss.addNode('C', 7.5, 0);
+    myTruss.addNode('D', 10, 0);
+    myTruss.addNode('E', 12.5, 0);
     myTruss.addNode('F', 15, 0);
-    myTruss.addNode('G', 20, -20);
+    myTruss.addNode('G', 20, 0);
+    myTruss.addNode('H', 5, -5);
+    myTruss.addNode('I', 10, -5);
+    myTruss.addNode('J', 15, -5);
 
     myTruss.addEdge('A', 'B');
-    myTruss.addEdge('A', 'E');
-    myTruss.addEdge('D', 'C');
-    myTruss.addEdge('D', 'G');
-    myTruss.addEdge('B', 'E');
-    myTruss.addEdge('B', 'F');
-    myTruss.addEdge('F', 'C');
-    myTruss.addEdge('F', 'E');
+    myTruss.addEdge('B', 'C');
+    myTruss.addEdge('C', 'D');
+    myTruss.addEdge('D', 'E');
+    myTruss.addEdge('E', 'F');
     myTruss.addEdge('F', 'G');
-    myTruss.addEdge('G', 'C');
-    myTruss.addEdge('G', 'E');
 
-    myTruss.addExt('F', 0, -20);
+    myTruss.addEdge('A', 'H');
+    myTruss.addEdge('B', 'H');
+    myTruss.addEdge('C', 'H');
+    myTruss.addEdge('C', 'I');
+    myTruss.addEdge('D', 'I');
+    myTruss.addEdge('E', 'I');
+    myTruss.addEdge('E', 'J');
+    myTruss.addEdge('F', 'J');
+    myTruss.addEdge('G', 'J');
+
+    myTruss.addEdge('I', 'H');
+    myTruss.addEdge('J', 'H');
+
+    myTruss.addExt('D', 0, -20);
     myTruss.addExt('A', 0, 10);
-    myTruss.addExt('D', 0, 10);
+    myTruss.addExt('G', 0, 10);
 
     myTruss.print();
     myTruss.solve();
