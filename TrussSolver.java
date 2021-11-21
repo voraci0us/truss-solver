@@ -103,19 +103,20 @@ class Truss extends Frame
 
    double xMin = loc[0][0];
    double xMax = loc[0][0];
-   double yMin = loc[0][1];
-   double yMax = loc[0][1];
+   double yMin = -loc[0][1];
+   double yMax = -loc[0][1];
    for (int i = 0; i < n; i++)
    {
     if (loc[i][0] < xMin)
       xMin = loc[i][0];
     if (loc[i][0] > xMax)
       xMax = loc[i][0];
-    if (loc[i][1] < yMin)
-      yMin = loc[i][1];
-    if (loc[i][1] > yMax)
-      yMax = loc[i][1];
+    if (-loc[i][1] < yMin)
+      yMin = -loc[i][1];
+    if (-loc[i][1] > yMax)
+      yMax = -loc[i][1];
    }
+
 
    double xSize = (xMax - xMin) * s + sH * 2;
    double ySize = (yMax - yMin) * s + sV * 2;
@@ -130,9 +131,9 @@ class Truss extends Frame
         if (adj[i][j])
         {
          int x1 = (int) (loc[i][0] * s + sH);
-         int y1 = (int) (loc[i][1] * s + sV);
+         int y1 = (int) (-loc[i][1] * s + sV);
          int x2 = (int) (loc[j][0] * s + sH);
-         int y2 = (int) (loc[j][1] * s + sV);
+         int y2 = (int) (-loc[j][1] * s + sV);
          g2.drawLine(x1, y1, x2, y2);
         }
       }
