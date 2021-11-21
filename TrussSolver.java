@@ -531,130 +531,50 @@ public class TrussSolver
 {
   public static void main (String[] args)
   {
+    Scanner s;
+    try {
+      File file = new File(args[0]);
+      s =  new Scanner(file);
+    }
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+      return;
+    }
 
-    /** // read input + store in adjacency list
-    Truss myTruss = new Truss(5);
+    int n = s.nextInt();
+    System.out.println("Scanning in "+n+" nodes...");
+    double len = s.nextDouble();
+    Truss myTruss = new Truss(n, len);
 
-    // add nodes
-    myTruss.addNode('A', 0, 0);
-    myTruss.addNode('B', 30, 0);
-    myTruss.addNode('C', 5, 10);
-    myTruss.addNode('D', 25, 10);
-    myTruss.addNode('E', 15, 0);
+    for (int i = 0; i < n; i++)
+    {
+      double x = s.nextDouble();
+      double y = s.nextDouble();
+      myTruss.addNode(Truss.character(i), x, y);
+    }
 
-    // add members between nodes
-    myTruss.addEdge('A', 'C');
-    myTruss.addEdge('A', 'E');
-    myTruss.addEdge('C', 'E');
-    myTruss.addEdge('C', 'D');
-    myTruss.addEdge('D', 'B');
-    myTruss.addEdge('B', 'E');
-    myTruss.addEdge('D', 'E');
+    int e = s.nextInt();
+    System.out.println("Scanning in "+e+" edges...");
+    s.nextLine();
+    for (int i = 0; i < e; i++)
+    {
+      String str = s.nextLine();
+      myTruss.addEdge(str.charAt(0), str.charAt(1));
+    }
 
-    // add external forces
-    myTruss.addExt('A', 0, 10);
-    myTruss.addExt('B', 0, 10);
-    myTruss.addExt('E', 0, -20);
-
-    myTruss.print();
-    myTruss.solve();**/
-
-    /**Truss myTruss = new Truss(6);
-    myTruss.addNode('A', 0, 0);
-    myTruss.addNode('B', 9, 0);
-    myTruss.addNode('C', 3, 0);
-    myTruss.addNode('D', 3, 3);
-    myTruss.addNode('E', 9, 3);
-    myTruss.addNode('F', 12, 3);
-
-    myTruss.addEdge('A', 'D', 2);
-    myTruss.addEdge('A', 'C', 2);
-    myTruss.addEdge('B', 'C', 2);
-    myTruss.addEdge('B', 'D', 2);
-    myTruss.addEdge('B', 'E', 2);
-    myTruss.addEdge('B', 'F', 2);
-    myTruss.addEdge('E', 'D', 2);
-    myTruss.addEdge('E', 'F', 2);
-
-    myTruss.addExt('D', 0, -10);
-    myTruss.addExt('A', 0, 6.66666667);
-    myTruss.addExt('B', 0, 3.3333333);
-
-    myTruss.print();
-    myTruss.solve();**/
-  //  myTruss.solve();
-
-    //System.out.println(index('C'));
-
-
-
-     //WEIGHT 954.11 kN
-     /**
-    Truss myTruss = new Truss(4);
-
-    myTruss.addNode('A', 0, 0);
-    myTruss.addNode('B', 30, 0);
-    myTruss.addNode('C', 15, 15);
-    myTruss.addNode('D', 15, 0);
-
-    myTruss.addEdge('A', 'C', 13.5);
-    myTruss.addEdge('A', 'D', 10);
-    myTruss.addEdge('B', 'C', 13.5);
-    myTruss.addEdge('B', 'D', 10);
-    myTruss.addEdge('D', 'C', 10);
-
-    myTruss.addExt('D', 0, -20);
-    myTruss.addExt('A', 0, 10);
-    myTruss.addExt('B', 0, 10);
-
-    myTruss.print();
-    myTruss.solve();
-    myTruss.printForces();**/
-
-
-
-    Truss myTruss = new Truss(10, 11.0);
-
-    myTruss.addNode('A', 0, 0);
-    myTruss.addNode('B', 5, 0);
-    myTruss.addNode('C', 7.5, 0);
-    myTruss.addNode('D', 10, 0);
-    myTruss.addNode('E', 12.5, 0);
-    myTruss.addNode('F', 15, 0);
-    myTruss.addNode('G', 20, 0);
-    myTruss.addNode('H', 5, -5);
-    myTruss.addNode('I', 10, -5);
-    myTruss.addNode('J', 15, -5);
-
-    myTruss.addEdge('A', 'B');
-    myTruss.addEdge('B', 'C');
-    myTruss.addEdge('C', 'D');
-    myTruss.addEdge('D', 'E');
-    myTruss.addEdge('E', 'F');
-    myTruss.addEdge('F', 'G');
-
-    myTruss.addEdge('A', 'H');
-    myTruss.addEdge('B', 'H');
-    myTruss.addEdge('C', 'H');
-    myTruss.addEdge('C', 'I');
-    myTruss.addEdge('D', 'I');
-    myTruss.addEdge('E', 'I');
-    myTruss.addEdge('E', 'J');
-    myTruss.addEdge('F', 'J');
-    myTruss.addEdge('G', 'J');
-
-    myTruss.addEdge('I', 'H');
-    myTruss.addEdge('J', 'H');
-
-    myTruss.addExt('D', 0, -20);
-    myTruss.addExt('A', 0, 10);
-    myTruss.addExt('G', 0, 10);
+    int f = s.nextInt();
+    System.out.println("Scanning in "+f+" external forces...\n");
+    s.nextLine();
+    for (int i = 0; i < f; i++)
+    {
+      String str = s.next();
+      myTruss.addExt(str.charAt(0), s.nextDouble(), s.nextDouble());
+    }
 
     myTruss.print();
     myTruss.solve();
     myTruss.printForces();
     myTruss.display();
-
-
   }
 }
