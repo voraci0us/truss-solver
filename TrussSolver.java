@@ -125,6 +125,7 @@ class Truss extends Frame
     sV -= yMin * s;
 
     drawEdges(g, s, sH, sV);
+    drawNodes(g, s, sH, sV, 10);
   }
 
   void drawEdges(Graphics g, double s, double sH, double sV)
@@ -147,6 +148,16 @@ class Truss extends Frame
     }
   }
 
+  void drawNodes(Graphics g, double s, double sH, double sV, int size)
+  {
+    Graphics2D g2 = (Graphics2D)g;
+    for (int i = 0; i < n; i++)
+    {
+      int x = (int) (loc[i][0] * s + sH);
+      int y = (int) (-loc[i][1] * s + sV);
+      g2.fillOval(x - (size / 2), y - (size / 2), size, size);
+    }
+  }
 
   public static int index(char c)
   {
