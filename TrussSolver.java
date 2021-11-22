@@ -98,7 +98,7 @@ class Truss extends Frame
   public void paint(Graphics g) {
     super.paint(g);
 
-    double s = 20.0;
+    double s = 40.0;
     double sH = 50.0;
     double sV = 50.0;
 
@@ -153,9 +153,15 @@ class Truss extends Frame
     Graphics2D g2 = (Graphics2D)g;
     for (int i = 0; i < n; i++)
     {
-      int x = (int) (loc[i][0] * s + sH);
-      int y = (int) (-loc[i][1] * s + sV);
-      g2.fillOval(x - (size / 2), y - (size / 2), size, size);
+      int x = (int) (loc[i][0] * s + sH) - (size / 2);
+      int y = (int) (-loc[i][1] * s + sV) - (size / 2);
+      g2.fillOval(x, y, size, size);
+
+      int textShift = -2;
+      if (loc[i][1] < 0)
+        textShift = 22;
+      g2.drawString(Character.toString(Truss.character(i)), x, y + textShift);
+
     }
   }
 
