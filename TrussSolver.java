@@ -500,22 +500,47 @@ class Truss extends Frame
           System.out.print(String.format("\tForce: %.2f kN", force));
 
           double area = -1;
-          if (force > 0.01)
+
+          if (Math.abs(force) < 0.01)
+          {
+            System.out.println("\n\tZero-force member");
+            // zero force members must be designed for 2% of the meximum force of any attached members
+            double maxForce = 0.0;
+            int maxSrc = '!';
+            int  maxEnd = '!';
+            for (int k = 0; k < n; k++)
+            {
+              Double iF = forces.get(character(i)+""+character(k));
+              Double jF = forces.get(character(j)+""+character(k));
+              if (iF != null && Math.abs(iF) > Math.abs(maxForce))
+              {
+                maxForce = iF;
+                maxSrc = character(i);
+                maxEnd = character(k);
+              }
+              if (jF != null && Math.abs(jF) > Math.abs(maxForce))
+              {
+                maxForce = jF;
+                maxSrc = character(j);
+                maxEnd = character(k);
+              }
+            }
+
+            area = 0.02 * Math.abs(maxForce / this.allowableStress);
+            System.out.println(String.format("\tMaximum attached member:  %c%c (%.3f kN)", maxSrc, maxEnd, maxForce));
+          }
+          else if (force > 0)
           {
             System.out.println(" (T)");
             area = Math.abs(force / this.allowableStress);
           }
-          else if (force < 0.01)
+          else
           {
             System.out.println(" (C)");
             double bucklingFactor = 10.0 / (length + 10.0);
             area = Math.abs(force / (this.allowableStress * bucklingFactor));
           }
-          else
-          {
-            System.out.println("\n\tZero-force member");
-            continue;
-          }
+
 
           System.out.println(String.format("\tArea: %.2f mm^2", area));
 
