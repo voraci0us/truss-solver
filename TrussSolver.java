@@ -414,14 +414,12 @@ class Truss extends Frame
         }
 
         // solve the matrix
-        //printMatrix(m);
         double f[] = new double[2];
         f[0] = m[2][0]*m[1][1] - m[1][0]*m[2][1];
         f[0] /= m[0][0]*m[1][1] - m[0][1]*m[1][0];
 
         f[1] = m[2][1]*m[0][0] - m[0][1]*m[2][0];
         f[1] /= m[1][1]*m[0][0] - m[0][1]*m[1][0];
-
 
         for (i = 0; i < 2; i++)
         {
@@ -468,6 +466,8 @@ class Truss extends Frame
         double sin = y / len;
         //System.out.println(String.format("cosX: %.2f, cosY: %.2f", cos, sin));
         double force = ext[ind][0] / cos;
+        if (cos == 0)
+          force = 0;
         handleForce(force, ind, u);
 
         // apply the force we solved for to the adjacent
@@ -513,7 +513,7 @@ class Truss extends Frame
           }
           else
           {
-            System.out.println("\nZero-force member");
+            System.out.println("\n\tZero-force member");
             continue;
           }
 
