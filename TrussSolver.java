@@ -97,39 +97,39 @@ class Truss extends Frame
 
   public void paint(Graphics g) {
     super.paint(g);
-    drawEdges(g);
+
+    double s = 20.0;
+    double sH = 50.0;
+    double sV = 50.0;
+
+    double xMin = loc[0][0];
+    double xMax = loc[0][0];
+    double yMin = -loc[0][1];
+    double yMax = -loc[0][1];
+    for (int i = 0; i < n; i++)
+    {
+     if (loc[i][0] < xMin)
+       xMin = loc[i][0];
+     if (loc[i][0] > xMax)
+       xMax = loc[i][0];
+     if (-loc[i][1] < yMin)
+       yMin = -loc[i][1];
+     if (-loc[i][1] > yMax)
+       yMax = -loc[i][1];
+    }
+
+    double xSize = (xMax - xMin) * s + sH * 2;
+    double ySize = (yMax - yMin) * s + sV * 2;
+    setSize((int) xSize, (int) ySize);
+    sH -= xMin * s;
+    sV -= yMin * s;
+
+    drawEdges(g, s, sH, sV);
   }
 
-  void drawEdges(Graphics g)
+  void drawEdges(Graphics g, double s, double sH, double sV)
   {
    Graphics2D g2 = (Graphics2D)g;
-
-   double s = 20.0;
-   double sH = 50.0;
-   double sV = 50.0;
-
-   double xMin = loc[0][0];
-   double xMax = loc[0][0];
-   double yMin = -loc[0][1];
-   double yMax = -loc[0][1];
-   for (int i = 0; i < n; i++)
-   {
-    if (loc[i][0] < xMin)
-      xMin = loc[i][0];
-    if (loc[i][0] > xMax)
-      xMax = loc[i][0];
-    if (-loc[i][1] < yMin)
-      yMin = -loc[i][1];
-    if (-loc[i][1] > yMax)
-      yMax = -loc[i][1];
-   }
-
-
-   double xSize = (xMax - xMin) * s + sH * 2;
-   double ySize = (yMax - yMin) * s + sV * 2;
-   setSize((int) xSize, (int) ySize);
-   sH -= xMin * s;
-   sV -= yMin * s;
 
    for (int i = 0; i < n; i++)
    {
