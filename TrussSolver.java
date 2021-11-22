@@ -41,6 +41,7 @@ class Truss extends Frame
   double[][] ext; // x, y components of external forces
 
   double maxMemberLength; // defines the longest beam allowed
+  double allowableStress;
 
   HashMap<String, Double> forces;
 
@@ -56,6 +57,7 @@ class Truss extends Frame
       this.n = n;
       this.e = 0;
       this.maxMemberLength = maxMemberLength;
+      this.allowableStress = 0.25;
 
       adj = new boolean[n][n];
       solved = new boolean[n][n];
@@ -98,7 +100,7 @@ class Truss extends Frame
   public void paint(Graphics g) {
     super.paint(g);
 
-    double s = 40.0;
+    double s = 60.0;
     double sH = 50.0;
     double sV = 50.0;
 
@@ -126,6 +128,7 @@ class Truss extends Frame
 
     drawEdges(g, s, sH, sV);
     drawNodes(g, s, sH, sV, 10);
+    drawForces(g, s, sH, sV);
   }
 
   void drawEdges(Graphics g, double s, double sH, double sV)
@@ -164,6 +167,34 @@ class Truss extends Frame
 
     }
   }
+
+  void drawForces(Graphics g, double s, double sH, double sV)
+  {
+    Graphics2D g2 = (Graphics2D)g;
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j <= i; j++)
+      {
+        String edge = Truss.character(i) + "" + Truss.character(j);
+        Double force = this.forces.get(edge);
+        if (force != null)
+        {
+          int x = (int) (((loc[i][0] + loc[j][0]) / 2) * s + sH);
+          int y = (int) (-((loc[i][1] + loc[j][1]) / 2) * s + sV);
+          g2.setColor(Color.RED);
+          String display;
+          if (force == 0)
+            display = "Zero-force";
+          else if (force > 0)
+            display = String.format("%.2fkN (T)", force);
+          else
+            display = String.format("%.2fkN (C)", force);
+          g2.drawString(display, x, y);
+        }
+      }
+    }
+  }
+
 
   public static int index(char c)
   {
@@ -455,6 +486,7 @@ class Truss extends Frame
   void printForces()
   {
     double totalVolume = 0;
+
     for (int i = 0; i < n; i++)
     {
       for (int j = 0; j <= i; j++)
@@ -463,72 +495,41 @@ class Truss extends Frame
         {
           double force = forces.get(character(i)+""+character(j));
           double length = this.length[i][j];
-          //double width = this.width[i][j];
-          //System.out.println(String.format("force %c%c : %.3f", character(i), character(j), force));
           System.out.println("Member "+character(i)+""+character(j));
           System.out.println(String.format("\tLength: %.2f m", length));
-
-
-
           System.out.print(String.format("\tForce: %.2f kN", force));
-/**
-          double allowedForce = 0;
-          if (force > 0)
+
+          double area = -1;
+          if (force > 0.01)
           {
             System.out.println(" (T)");
-            allowedForce = area * 0.25;
+            area = Math.abs(force / this.allowableStress);
           }
-          else if (force < 0)
+          else if (force < 0.01)
           {
             System.out.println(" (C)");
-            allowedForce = area * -0.25 * 10.0 / (length + 10.0);
-          }
-          else
-          {
-            // zero-force member
-
-          }**/
-
-          double allowedForce = 0;
-          if (force > 0)
-          {
-            System.out.println(" (T)");
-            allowedForce = 0.25;
-          }
-          else if (force < 0)
-          {
-            System.out.println(" (C)");
-            allowedForce = -0.25 * 10.0 / (length + 10.0);
+            double bucklingFactor = 10.0 / (length + 10.0);
+            area = Math.abs(force / (this.allowableStress * bucklingFactor));
           }
           else
           {
             System.out.println("\nZero-force member");
             continue;
-            // zero-force member
           }
 
-          double area = Math.abs(force / allowedForce);
+          System.out.println(String.format("\tArea: %.2f mm^2", area));
 
-          System.out.println(String.format("\tMinimum width: %.2f mm", Math.sqrt(area)));
-          System.out.println(String.format("\tMiniumum area: %.2f mm^2", area));
-
-
-          System.out.println(String.format("\tAllowable force: %.2f kN", allowedForce));
-
-          /**if (Math.abs(force) > Math.abs(allowedForce))
-            System.out.println("\t---EXCEEDS MAXIMUM FORCE---");**/
-
-          double volume = area * length * 1000;
-          System.out.println(String.format("\tVolume: %.2f mm^3", volume));
+          double volume = area * length;
+          System.out.println(String.format("\tVolume: %.3f mm^3", volume));
+          System.out.println(String.format("\tWeight: %.3f kN", volume * 0.000078));
           totalVolume += volume;
-          //System.out.println(String.format("of %.3f width beam of length %.3f is %.3f", this.width[i][j], this.length[i][j], force));
         }
       }
     }
 
-    System.out.println(String.format("\nTotal Volume: %.2f mm^3", totalVolume));
-    double totalWeight = totalVolume * 0.078 / 1000;
-    System.out.println(String.format("Total Weight: %.2f kN", totalWeight));
+    System.out.println(String.format("\nTotal Volume: %.3f mm^3", totalVolume));
+    double totalWeight = totalVolume * 0.000078;
+    System.out.println(String.format("Total Weight: %.3f kN", totalWeight));
 
   }
 
