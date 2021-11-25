@@ -486,21 +486,22 @@ public class Truss extends Frame
           if (Math.abs(force) < 0.01)
           {
             System.out.println("\n\tZero-force member");
+
             // zero force members must be designed for 2% of the meximum force of any attached members
             double maxForce = 0.0;
-            int maxSrc = '!';
-            int  maxEnd = '!';
+            char maxSrc = '!';
+            char maxEnd = '!';
             for (int k = 0; k < n; k++)
             {
               Double iF = forces.get(character(i)+""+character(k));
               Double jF = forces.get(character(j)+""+character(k));
-              if (iF != null && Math.abs(iF) > Math.abs(maxForce))
+              if (i != k && iF != null && Math.abs(iF) > Math.abs(maxForce))
               {
                 maxForce = iF;
                 maxSrc = character(i);
                 maxEnd = character(k);
               }
-              if (jF != null && Math.abs(jF) > Math.abs(maxForce))
+              if (j != k && jF != null && Math.abs(jF) > Math.abs(maxForce))
               {
                 maxForce = jF;
                 maxSrc = character(j);
@@ -509,7 +510,7 @@ public class Truss extends Frame
             }
 
             area = 0.02 * Math.abs(maxForce / this.allowableStress);
-            System.out.println(String.format("\tMaximum attached member:  %c%c (%.3f kN)", maxSrc, maxEnd, maxForce));
+            System.out.println(String.format("\tMaximum attached member: %c%c (%.3f kN)", maxSrc, maxEnd, maxForce));
           }
           else if (force > 0)
           {
