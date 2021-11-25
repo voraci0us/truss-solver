@@ -7,6 +7,8 @@ import javax.swing.*;
 
 public class Truss extends Frame
 {
+  final static double ZERO_THRESHOLD = 0.01;
+
   // # of nodes
   final int n;
   // # of edges
@@ -188,6 +190,13 @@ public class Truss extends Frame
     return (char) (index + (int) 'A');
   }
 
+  public static boolean isZero(double d)
+  {
+    if (Math.abs(d) < ZERO_THRESHOLD)
+      return true;
+    return false;
+  }
+
   public void addNode(char c, double x, double y)
   {
     int index = index(c);
@@ -317,7 +326,7 @@ public class Truss extends Frame
   {
 
     double formattedForce = f * -1;
-    if (Math.abs(formattedForce) < 0.001)
+    if (isZero(formattedForce))
         formattedForce = 0;
     this.forces.put(character(a)+""+character(b), formattedForce);
     this.forces.put(character(b)+""+character(a), formattedForce);
@@ -483,7 +492,7 @@ public class Truss extends Frame
 
           double area = -1;
 
-          if (Math.abs(force) < 0.01)
+          if (isZero(force))
           {
             System.out.println("\n\tZero-force member");
 
