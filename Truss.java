@@ -7,8 +7,8 @@ import javax.swing.*;
 
 public class Truss extends Frame
 {
-  // # of nodes DOES NOT CHANGE AFTER INITIALIZATION
-  int n;
+  // # of nodes
+  final int n;
   // # of edges
   int e;
 
