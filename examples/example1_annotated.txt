@@ -3,7 +3,7 @@
 90.0 // maximum beam length
 
 0 0 // next N lines are (x, y) coordinates of each node
-15 0 // nodes are intern
+15 0
 30 0
 10 10
 20 10
