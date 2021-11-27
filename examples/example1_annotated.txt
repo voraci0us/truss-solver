@@ -1,0 +1,25 @@
+5 // number of nodes "N"
+
+90.0 // maximum beam length
+
+0 0 // next N lines are (x, y) coordinates of each node
+15 0 // nodes are intern
+30 0
+10 10
+20 10
+
+7 // number of edges "E"
+
+AD // next E lines represent edges/beams/members between nodes
+AB
+CE
+CB
+DB
+EB
+DE
+
+3 // number of external forces "F"
+
+B 0 -20 // next F lines represent external forces
+A 0 10 // node where force should be applied, x component, y component
+C 0 10
