@@ -170,9 +170,9 @@ public class Truss extends Frame
           if (force == 0)
             display = "Zero-force";
           else if (force > 0)
-            display = String.format("%.2fkN (T)", force);
+            display = String.format("%.3fkN (T)", force);
           else
-            display = String.format("%.2fkN (C)", force);
+            display = String.format("%.3fkN (C)", force);
           g2.drawString(display, x, y);
         }
       }
@@ -271,7 +271,7 @@ public class Truss extends Frame
     System.out.println("Given external forces:");
     for(int i = 0; i < n; i++)
     {
-      System.out.println(String.format("%c: (%.2f, %.2f)", character(i), ext[i][0], ext[i][1]));
+      System.out.println(String.format("%c: (%.3f, %.3f)", character(i), ext[i][0], ext[i][1]));
     }
     System.out.println("");
   }
@@ -307,7 +307,7 @@ public class Truss extends Frame
     {
       for (int j = 0; j < n; j++)
       {
-        System.out.print(String.format("%.2f ", length[i][j]));
+        System.out.print(String.format("%.3f ", length[i][j]));
       }
       System.out.println();
     }
@@ -451,12 +451,12 @@ public class Truss extends Frame
         double x = getX(u) - getX(ind);
         double y = getY(u) - getY(ind);
         double len = Math.sqrt(x * x + y * y);
-          //System.out.println(String.format("%c to %c: %.2f, %.2f (%.2f)", thisNode.label, thisAdj, x, y, len));
+          //System.out.println(String.format("%c to %c: %.3f, %.3f (%.3f)", thisNode.label, thisAdj, x, y, len));
 
         double cos = x / len;
         double sin = y / len;
-        //System.out.println(String.format("cosX: %.2f, cosY: %.2f", cos, sin));
-        //System.out.println(String.format("extX: %.2f, extY: %.2f", ext[ind][0], ext[ind][1]));
+        //System.out.println(String.format("cosX: %.3f, cosY: %.3f", cos, sin));
+        //System.out.println(String.format("extX: %.3f, extY: %.3f", ext[ind][0], ext[ind][1]));
         double force;
         if (isZero(cos))
           force = ext[ind][1] / sin;
@@ -491,8 +491,8 @@ public class Truss extends Frame
           double force = forces.get(character(i)+""+character(j));
           double length = this.length[i][j];
           System.out.println("Member "+character(i)+""+character(j));
-          System.out.println(String.format("\tLength: %.2f m", length));
-          System.out.print(String.format("\tForce: %.2f kN", force));
+          System.out.println(String.format("\tLength: %.3f m", length));
+          System.out.print(String.format("\tForce: %.3f kN", force));
 
           double area = -1;
 
@@ -538,7 +538,7 @@ public class Truss extends Frame
           }
 
 
-          System.out.println(String.format("\tArea: %.2f mm^2", area));
+          System.out.println(String.format("\tArea: %.3f mm^2", area));
 
           double volume = area * length * 1000;
           System.out.println(String.format("\tVolume: %.3f mm^3", volume));
