@@ -456,9 +456,13 @@ public class Truss extends Frame
         double cos = x / len;
         double sin = y / len;
         //System.out.println(String.format("cosX: %.2f, cosY: %.2f", cos, sin));
-        double force = ext[ind][0] / cos;
-        if (cos == 0)
-          force = 0;
+        //System.out.println(String.format("extX: %.2f, extY: %.2f", ext[ind][0], ext[ind][1]));
+        double force;
+        if (isZero(cos))
+          force = ext[ind][1] / sin;
+        else
+        force = ext[ind][0] / cos;
+        System.out.println(force);
         handleForce(force, ind, u);
 
         // apply the force we solved for to the adjacent
