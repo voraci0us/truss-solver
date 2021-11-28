@@ -540,7 +540,7 @@ public class Truss extends Frame
 
           System.out.println(String.format("\tArea: %.2f mm^2", area));
 
-          double volume = area * length;
+          double volume = area * length * 1000;
           System.out.println(String.format("\tVolume: %.3f mm^3", volume));
           System.out.println(String.format("\tWeight: %.3f kN", volume * 0.000078));
           totalVolume += volume;
