@@ -290,7 +290,7 @@ public class Truss extends Frame
           double Y = this.loc[j][1] - this.loc[i][1];
           double L = Math.sqrt(X * X + Y * Y);
           this.length[i][j] = L;
-          if (L > this.maxMemberLength)
+          if (Math.abs(L - this.maxMemberLength) > ZERO_THRESHOLD)
           {
             System.out.println(String.format("***MEMBER %c%c IS %.3f LONG, MUST NOT EXCEED %.3f***", character(i), character(j), L, this.maxMemberLength));
           }
