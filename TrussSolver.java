@@ -1,8 +1,18 @@
 import java.util.*;
 import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Line2D;
+import java.awt.Graphics;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class TrussSolver
+import javax.swing.*;
+
+public class TrussSolver extends JPanel
 {
+  static Truss myTruss;
+
   public static void main (String[] args)
   {
     Scanner s;
@@ -19,7 +29,7 @@ public class TrussSolver
     int n = s.nextInt();
     System.out.println("Scanning in "+n+" nodes...");
     double len = s.nextDouble();
-    Truss myTruss = new Truss(n, len);
+    myTruss = new Truss(n, len);
 
     for (int i = 0; i < n; i++)
     {
@@ -46,9 +56,44 @@ public class TrussSolver
       myTruss.addExt(str.charAt(0), s.nextDouble(), s.nextDouble());
     }
 
+    JFrame window = new JFrame("Hello world");
+    TrussSolver panel = new TrussSolver();
+
+    // This takes the panel component and places it in the
+    // JFrame ... it is transparent so can't really be seen.
+    window.add(panel);
+
+    // When the user clicks exit to terminate the window.
+    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // How big should the window be.
+    window.setSize(400, 400);
+
+    // Make the windows render to the screen.
+    window.setVisible(true);
+
     myTruss.print();
     myTruss.solve();
     myTruss.printForces();
-    myTruss.display();
   }
+
+    public void paintComponent(Graphics g) {
+      super.paintComponent(g);
+
+      double s = 60.0;
+      double sH = 50.0;
+      double sV = 50.0;
+
+      double min[] = myTruss.getMin();
+      double max[] = myTruss.getMax();
+
+      int h = this.getBounds().height;
+      int w = this.getBounds().width;
+
+      s = Math.min(w / (max[0] - min[0]), h / (max[1] - min[1]));
+      sV -= min[1] * s;
+
+      myTruss.drawEdges(g, s, sH, sV);
+      myTruss.drawNodes(g, s, sH, sV, 10);
+      myTruss.drawForces(g, s, sH, sV);
+    }
 }

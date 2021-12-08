@@ -5,7 +5,7 @@ import java.awt.geom.Line2D;
 
 import javax.swing.*;
 
-public class Truss extends Frame
+public class Truss
 {
   final static double ZERO_THRESHOLD = 0.01;
 
@@ -37,7 +37,6 @@ public class Truss extends Frame
 
   public Truss(int n, double maxMemberLength)
   {
-      super("TrussSolver");
       this.n = n;
       this.e = 0;
       this.maxMemberLength = maxMemberLength;
@@ -65,54 +64,6 @@ public class Truss extends Frame
       }
 
       forces = new HashMap<String, Double>();
-
-      setSize(480, 200);
-      //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setLocationRelativeTo(null);
-  }
-
-
-  public void display(){
-     setVisible(true);
-     addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent windowEvent){
-           System.exit(0);
-        }
-     });
-  }
-
-  public void paint(Graphics g) {
-    super.paint(g);
-
-    double s = 60.0;
-    double sH = 50.0;
-    double sV = 50.0;
-
-    double xMin = loc[0][0];
-    double xMax = loc[0][0];
-    double yMin = -loc[0][1];
-    double yMax = -loc[0][1];
-    for (int i = 0; i < n; i++)
-    {
-     if (loc[i][0] < xMin)
-       xMin = loc[i][0];
-     if (loc[i][0] > xMax)
-       xMax = loc[i][0];
-     if (-loc[i][1] < yMin)
-       yMin = -loc[i][1];
-     if (-loc[i][1] > yMax)
-       yMax = -loc[i][1];
-    }
-
-    double xSize = (xMax - xMin) * s + sH * 2;
-    double ySize = (yMax - yMin) * s + sV * 2;
-    setSize((int) xSize, (int) ySize);
-    sH -= xMin * s;
-    sV -= yMin * s;
-
-    drawEdges(g, s, sH, sV);
-    drawNodes(g, s, sH, sV, 10);
-    drawForces(g, s, sH, sV);
   }
 
   void drawEdges(Graphics g, double s, double sH, double sV)
@@ -178,7 +129,6 @@ public class Truss extends Frame
       }
     }
   }
-
 
   public static int index(char c)
   {
@@ -564,5 +514,42 @@ public class Truss extends Frame
     return loc[i][1];
   }
 
+  public double[] getMin()
+  {
+    double xMin = loc[0][0];
+    double yMin = -loc[0][1];
+
+    for (int i = 0; i < n; i++)
+    {
+     if (loc[i][0] < xMin)
+       xMin = loc[i][0];
+     if (-loc[i][1] < yMin)
+       yMin = -loc[i][1];
+    }
+
+    double returning[] = new double[2];
+    returning[0] = xMin;
+    returning[1] = yMin;
+    return returning;
+  }
+
+  public double[] getMax()
+  {
+    double xMax = loc[0][0];
+    double yMax = -loc[0][1];
+
+    for (int i = 0; i < n; i++)
+    {
+     if (loc[i][0] > xMax)
+       xMax = loc[i][0];
+     if (-loc[i][1] > yMax)
+       yMax = -loc[i][1];
+    }
+
+    double returning[] = new double[2];
+    returning[0] = xMax;
+    returning[1] = yMax;
+    return returning;
+  }
 
 }
