@@ -12,6 +12,8 @@ import javax.swing.*;
 public class TrussSolver extends JPanel
 {
   static Truss myTruss;
+  static JFrame window;
+  public static double margins = 50.0;
 
   public static void main (String[] args)
   {
@@ -56,7 +58,7 @@ public class TrussSolver extends JPanel
       myTruss.addExt(str.charAt(0), s.nextDouble(), s.nextDouble());
     }
 
-    JFrame window = new JFrame("Hello world");
+    window = new JFrame("Hello world");
     TrussSolver panel = new TrussSolver();
 
     // This takes the panel component and places it in the
@@ -67,6 +69,8 @@ public class TrussSolver extends JPanel
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     // How big should the window be.
     window.setSize(400, 400);
+    int minSize = (int) (margins * 6.0);
+    window.setMinimumSize(new Dimension(minSize, minSize));
 
     // Make the windows render to the screen.
     window.setVisible(true);
@@ -78,8 +82,6 @@ public class TrussSolver extends JPanel
 
     public void paintComponent(Graphics g) {
       super.paintComponent(g);
-
-      double margins = 50.0;
 
       double min[] = myTruss.getMin();
       double max[] = myTruss.getMax();
