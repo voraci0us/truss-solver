@@ -79,9 +79,7 @@ public class TrussSolver extends JPanel
     public void paintComponent(Graphics g) {
       super.paintComponent(g);
 
-      double s = 60.0;
-      double sH = 50.0;
-      double sV = 50.0;
+      double margins = 50.0;
 
       double min[] = myTruss.getMin();
       double max[] = myTruss.getMax();
@@ -89,13 +87,26 @@ public class TrussSolver extends JPanel
       int h = this.getBounds().height;
       int w = this.getBounds().width;
 
-      double xScale = (w - 2*sH) / (max[0] - min[0]);
-      double yScale = (h - 2*sV) / (max[1] - min[1]);
-      s = Math.min(xScale, yScale);
+      double trussWidth = max[0] - min[0];
+      double trussHeight = max[1] - min[1];
 
-      sH += Math.abs(min[0]);
-      sV += s * (Math.abs(min[1]) + Math.abs(max[1]));
+      double xScale = (w - 2*margins) / trussWidth;
+      double yScale = (h - 2*margins) / trussHeight;
 
+      double s, sH, sV;
+
+      if (xScale < yScale)
+      {
+        s = xScale;
+        sH = (margins / s) - min[0]; //margins - min[0];
+        sV = (h / s - trussHeight) / 2;;
+      }
+      else
+      {
+        s = yScale;
+        sH = (w / s - trussWidth) / 2; //(w - 2*margins) / 2 - (trussWidth / 2);
+        sV = (margins / s) - min[1];
+      }
 
       myTruss.drawEdges(g, s, sH, sV);
       myTruss.drawNodes(g, s, sH, sV, 10);

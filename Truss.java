@@ -76,10 +76,10 @@ public class Truss
       {
         if (adj[i][j])
         {
-         int x1 = (int) (loc[i][0] * s + sH);
-         int y1 = (int) (-loc[i][1] * s + sV);
-         int x2 = (int) (loc[j][0] * s + sH);
-         int y2 = (int) (-loc[j][1] * s + sV);
+         int x1 = (int) ((loc[i][0] + sH) * s);
+         int y1 = (int) ((-loc[i][1] + sV) * s);
+         int x2 = (int) ((loc[j][0] + sH) * s);
+         int y2 = (int) ((-loc[j][1] + sV) * s);
          g2.drawLine(x1, y1, x2, y2);
         }
       }
@@ -91,8 +91,8 @@ public class Truss
     Graphics2D g2 = (Graphics2D)g;
     for (int i = 0; i < n; i++)
     {
-      int x = (int) (loc[i][0] * s + sH) - (size / 2);
-      int y = (int) (-loc[i][1] * s + sV) - (size / 2);
+      int x = (int) ((loc[i][0] + sH) * s) - (size / 2);
+      int y = (int) ((-loc[i][1] + sV) * s) - (size / 2);
       g2.fillOval(x, y, size, size);
 
       int textShift = -2;
@@ -114,8 +114,9 @@ public class Truss
         Double force = this.forces.get(edge);
         if (force != null)
         {
-          int x = (int) (((loc[i][0] + loc[j][0]) / 2) * s + sH);
-          int y = (int) (-((loc[i][1] + loc[j][1]) / 2) * s + sV);
+
+          int x = (int) (((loc[i][0] + loc[j][0]) / 2 + sH) * s);
+          int y = (int) ((-(loc[i][1] + loc[j][1]) / 2 + sV) * s);
           g2.setColor(Color.RED);
           String display;
           if (force == 0)
