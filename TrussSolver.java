@@ -98,13 +98,13 @@ public class TrussSolver extends JPanel
       if (xScale < yScale)
       {
         s = xScale;
-        sH = (margins / s) - min[0]; //margins - min[0];
-        sV = (h / s - trussHeight) / 2;;
+        sH = (margins / s) - min[0];
+        sV = (h / s - trussHeight) / 2;
       }
       else
       {
         s = yScale;
-        sH = (w / s - trussWidth) / 2; //(w - 2*margins) / 2 - (trussWidth / 2);
+        sH = (w / s - trussWidth) / 2;
         sV = (margins / s) - min[1];
       }
 
